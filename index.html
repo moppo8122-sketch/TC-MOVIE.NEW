@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TC MOVIE — วิทยาลัยเทคนิคอุดรธานี</title>
+<meta name="google-site-verification" content="MwE7F3hyDAAo9zhp0EKxo8Rsz9qK_lj_7-6gp8hP0ro" />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-dim: #7a5f25;
+    --red: #b01c24;
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #1a1a1a;
+    --text: #f0ece0;
+    --muted: #888;
+    --border: rgba(201,168,76,0.2);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sarabun', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    padding: 0 2rem;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 4px;
+    color: var(--gold);
+  }
+  .nav-logo span { color: var(--text); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative;
+    padding: 80px 2rem 4rem;
+    text-align: center;
+    overflow: hidden;
+  }
+  .bg-video {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    opacity: 0.35;
+    filter: brightness(0.5) saturate(1.2);
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px),
+      repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(255,255,255,0.03) 80px, rgba(255,255,255,0.03) 81px);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    padding: 6px 20px;
+    margin-bottom: 2rem;
+    animation: fadeIn 1s ease;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 14vw, 10rem);
+    letter-spacing: 8px;
+    line-height: 0.9;
+    animation: fadeUp 1s ease 0.2s both;
+  }
+  .hero-title .accent { color: var(--gold); }
+  .hero-sub {
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 1.5rem;
+    animation: fadeUp 1s ease 0.4s both;
+  }
+  .hero-desc {
+    max-width: 480px;
+    margin: 2rem auto 0;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: #aaa;
+    animation: fadeUp 1s ease 0.5s both;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    margin-top: 3rem;
+    animation: fadeUp 1s ease 0.6s both;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: #0a0a0a;
+    padding: 14px 36px;
+    font-family: 'Sarabun', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: #e0b85a; transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    padding: 13px 36px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border: 1px solid rgba(240,236,224,0.3);
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* FILM STRIP */
+  .filmstrip {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 40px;
+    display: flex; gap: 0;
+    overflow: hidden;
+    opacity: 0.15;
+  }
+  .film-hole {
+    width: 30px; height: 20px;
+    border: 2px solid var(--gold);
+    flex-shrink: 0;
+    margin: auto 6px;
+  }
+
+  /* SECTIONS */
+  section { padding: 6rem 2rem; }
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    letter-spacing: 4px;
+    line-height: 1;
+  }
+  #genres .section-title.valorant-text {
+    display: inline-block;
+    position: relative;
+    color: transparent;
+    background: linear-gradient(90deg, rgba(201,168,76,1) 0%, rgba(240,236,224,0.95) 40%, rgba(201,168,76,0.4) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: valorantShimmer 3s ease-in-out infinite;
+  }
+  #genres .section-title.valorant-text::before,
+  #genres .section-title.valorant-text::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    color: var(--gold);
+    opacity: 0.32;
+    z-index: -1;
+    pointer-events: none;
+  }
+  #genres .section-title.valorant-text::before {
+    transform: translate(-2px, -2px);
+    filter: blur(0.5px);
+    animation: valorantGlitchA 2.7s infinite linear;
+  }
+  #genres .section-title.valorant-text::after {
+    transform: translate(2px, 2px);
+    filter: blur(0.5px);
+    animation: valorantGlitchB 3.1s infinite linear reverse;
+  }
+  @keyframes valorantShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  @keyframes valorantGlitchA {
+    0%, 20%, 40%, 60%, 80%, 100% { transform: translate(-2px, -2px); }
+    10% { transform: translate(-5px, -1px); }
+    30% { transform: translate(1px, -3px); }
+    50% { transform: translate(-3px, 0px); }
+    70% { transform: translate(2px, -2px); }
+    90% { transform: translate(-1px, -4px); }
+  }
+  @keyframes valorantGlitchB {
+    0%, 20%, 40%, 60%, 80%, 100% { transform: translate(2px, 2px); }
+    10% { transform: translate(5px, 1px); }
+    30% { transform: translate(-1px, 3px); }
+    50% { transform: translate(3px, 0px); }
+    70% { transform: translate(-2px, 2px); }
+    90% { transform: translate(1px, 4px); }
+  }
+  .divider {
+    width: 60px; height: 2px;
+    background: var(--gold);
+    margin: 1.5rem 0;
+  }
+
+  /* GENRES */
+  #genres { background: var(--bg2); }
+  .genres-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    margin-top: 3rem;
+    border: 1px solid var(--border);
+  }
+  .genre-card {
+    background: var(--bg3);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    border: 1px solid transparent;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  .genre-card:hover { border-color: var(--gold); }
+  /* Dark overlay ทับรูป ให้ข้อความอ่านง่าย */
+  .genre-card::after {
+    content: '';
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.45) 0%, rgba(10,10,10,0.72) 100%);
+    transition: background 0.25s;
+  }
+  .genre-card:hover::after {
+    background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.6) 100%);
+  }
+  /* รูปพื้นหลัง fade slideshow */
+  .fade-img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 0;
+  }
+  .fade-img.active { opacity: 1; }
+  /* content อยู่เหนือรูปและ overlay */
+  .genre-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+    position: relative; z-index: 2;
+  }
+  .genre-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 3px;
+    color: var(--text);
+    position: relative; z-index: 2;
+  }
+  .genre-count {
+    font-size: 0.75rem;
+    color: rgba(240,236,224,0.75);
+    margin-top: 0.4rem;
+    letter-spacing: 1px;
+    position: relative; z-index: 2;
+  }
+
+  /* MOVIES */
+  #movies { background: var(--bg); }
+  .movies-filter {
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+  }
+  .filter-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 7px 20px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #0a0a0a;
+  }
+  .movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  .movie-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: transform 0.25s, border-color 0.25s;
+    cursor: pointer;
+  }
+  .movie-card:hover { transform: translateY(-4px); border-color: var(--gold); }
+  .movie-thumb {
+    width: 100%;
+    height: 220px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg3);
+  }
+  .movie-cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .movie-thumb::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.75));
+  }
+  .movie-thumb .movie-emoji {
+    position: relative;
+    z-index: 2;
+    font-size: 3rem;
+    color: var(--text);
+  }
+  .movie-info { padding: 1rem 1.2rem 1.2rem; }
+  .movie-genre-tag {
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .movie-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    line-height: 1.1;
+    margin-bottom: 0.3rem;
+  }
+  .movie-title-th {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+  }
+  .movie-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding-top: 0.8rem;
+    margin-top: 0.8rem;
+  }
+  .movie-year {
+    background: var(--red);
+    color: #fff;
+    padding: 2px 8px;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+  }
+  .star-rating { color: var(--gold); font-size: 0.8rem; }
+
+  /* ABOUT */
+  #about {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-top: 3rem;
+  }
+  @media (max-width: 700px) {
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+  }
+  .about-text p {
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: #aaa;
+    margin-bottom: 1rem;
+  }
+  .team-list { list-style: none; }
+  .team-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+  } 
+  .team-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    color: var(--gold-dim);
+    line-height: 1;
+    min-width: 2rem;
+  }
+  .team-name { font-weight: 500; font-size: 0.9rem; }
+  .team-role { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
+  /* RATE */
+  #rate {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+    text-align: center;
+  }
+  #rate > * { position: relative; z-index: 3; }
+  .rate-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.35;
+    filter: brightness(0.45) saturate(1.1);
+    z-index: 0;
+  }
+  .rate-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(10,10,10,0.65) 0%, rgba(10,10,10,0.8) 35%, rgba(10,10,10,0.95) 100%);
+    pointer-events: none;
+  }
+  .rate-inner { max-width: 560px; margin: 0 auto; }
+  .rate-inner p { color: var(--muted); margin: 1rem 0 2.5rem; line-height: 1.8; }
+
+  /* FOOTER */
+  footer {
+    background: #050505;
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 6px;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  footer p { font-size: 0.78rem; color: var(--muted); letter-spacing: 1px; }
+
+  /* ANIMATIONS */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--gold-dim); }
+
+  /* === VIDEO BACKGROUND (genres) === */
+  #genres {
+    position: relative;
+    overflow: hidden;
+    background: #000;
+  }
+  #genres > * { position: relative; z-index: 3; }
+
+  /* วิดีโอพื้นหลัง */
+  .genres-video {
+    position: absolute; inset: 0; z-index: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.45;
+    filter: brightness(0.5) saturate(1.2);
+  }
+
+  /* Dark overlay ทับวิดีโอ */
+  .genres-overlay {
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(135deg, rgba(10,10,10,0.78) 0%, rgba(10,10,10,0.55) 100%);
+  }
+  /* Scanline texture */
+  .genres-scanlines {
+    position: absolute; inset: 0; z-index: 2;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 3px,
+      rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px
+    );
+    pointer-events: none;
+  }
+  /* Vignette */
+  .genres-vignette {
+    position: absolute; inset: 0; z-index: 2;
+    box-shadow: inset 0 0 120px rgba(0,0,0,0.6);
+    pointer-events: none;
+  }
+
+  /* genre cards — semi-transparent ให้วิดีโอโชว์ */
+  .genre-card {
+    background: rgba(26,26,26,0.55) !important;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(201,168,76,0.15) !important;
+  }
+  .genre-card:hover {
+    background: rgba(40,40,40,0.8) !important;
+    border-color: var(--gold) !important;
+  }
+
+  /* === SEARCH BAR === */
+  .search-wrap {
+    margin-top: 2rem;
+    margin-bottom: 0;
+    position: relative;
+    max-width: 480px;
+  }
+  .search-wrap input {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px 44px 12px 16px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-wrap input::placeholder { color: var(--muted); }
+  .search-wrap input:focus { border-color: var(--gold); }
+  .search-wrap .search-icon {
+    position: absolute; right: 14px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted); font-size: 1rem; pointer-events: none;
+  }
+  .search-clear {
+    position: absolute; right: 38px; top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none; color: var(--muted);
+    cursor: pointer; font-size: 1rem; display: none; padding: 2px 4px;
+  }
+  .search-clear:hover { color: var(--gold); }
+
+  .movies-controls {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    align-items: flex-end;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  /* === STAR RATING ON CARDS === */
+  .movie-rating-row {
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 0.6rem;
+  }
+  .star-display {
+    display: flex; gap: 2px;
+  }
+  .star-display span {
+    font-size: 0.85rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.15s, transform 0.15s;
+    user-select: none;
+  }
+  .star-display span:hover,
+  .star-display span.lit { color: var(--gold); }
+  .star-display span:hover { transform: scale(1.2); }
+  .rating-count {
+    font-size: 0.7rem; color: var(--muted); letter-spacing: 1px;
+  }
+  .rating-avg {
+    font-size: 0.7rem; color: var(--gold); font-weight: 500; letter-spacing: 1px;
+  }
+
+  /* No results message */
+  .no-results {
+    text-align: center; padding: 4rem 2rem;
+    color: var(--muted); font-size: 0.9rem; letter-spacing: 2px;
+    grid-column: 1/-1;
+  }
+  /* SITE LOADER (Genshin-like) */
+  #site-loader { position: fixed; inset: 0; z-index: 9999; display:flex; align-items:center; justify-content:center; background: linear-gradient(180deg, rgba(4,4,6,0.95), rgba(4,4,6,0.85)); transition: opacity 0.8s ease, visibility 0.8s; }
+  #site-loader[aria-hidden="true"] { opacity:0; visibility:hidden; pointer-events:none; }
+  #site-loader .loader-bg { position:absolute; inset:0; background: radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, rgba(0,0,0,0.5) 60%), url('') center/cover no-repeat; filter: blur(8px) contrast(1.05); }
+  .loader-inner { position:relative; z-index:2; text-align:center; color:var(--text); padding:24px; }
+  .loader-ring { width:100px; height:100px; border-radius:50%; margin:0 auto 14px; box-shadow: 0 0 30px rgba(201,168,76,0.12) inset; position:relative; }
+  .loader-ring::before { content:''; position:absolute; inset:6px; border-radius:50%; background: linear-gradient(90deg, rgba(201,168,76,0.06), rgba(240,236,224,0.02)); }
+  .loader-ring::after { content:''; position:absolute; left:50%; top:50%; width:14px; height:14px; transform:translate(-50%,-50%); border-radius:50%; background:var(--gold); box-shadow:0 0 18px var(--gold); animation: loaderPulse 1.6s infinite ease-in-out; }
+  .loader-logo { font-family: 'Bebas Neue', sans-serif; font-size: 2.6rem; letter-spacing:6px; margin-bottom:6px; color:var(--text); }
+  .loader-logo span { color:var(--gold); }
+  .loader-sub { color:var(--muted); font-size:0.9rem; margin-bottom:10px; }
+  .loader-dots span { display:inline-block; width:8px; height:8px; background:var(--gold); border-radius:50%; margin:0 6px; opacity:0.2; animation: loaderDots 1s infinite steps(3,end); }
+  .loader-dots span:nth-child(2){ animation-delay:0.15s } .loader-dots span:nth-child(3){ animation-delay:0.3s }
+  @keyframes loaderPulse { 0%{ transform:translate(-50%,-50%) scale(1); opacity:0.9 } 50%{ transform:translate(-50%,-50%) scale(1.5); opacity:1 } 100%{ transform:translate(-50%,-50%) scale(1); opacity:0.9 } }
+  @keyframes loaderDots { 0%{ opacity:0.2; transform:translateY(0) } 50%{ opacity:1; transform:translateY(-8px) } 100%{ opacity:0.2; transform:translateY(0) } }
+</style>
+</head>
+<body>
+
+<!-- SITE LOADER -->
+<div id="site-loader" aria-hidden="false">
+  <div class="loader-bg"></div>
+  <div class="loader-inner">
+    <div class="loader-ring" aria-hidden="true"></div>
+    <div class="loader-logo">TC<span>MOVIE</span></div>
+    <div class="loader-sub">Short Films Loading</div>
+    <div class="loader-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">TC<span>MOVIE</span></div>
+  <ul class="nav-links">
+    <li><a href="#genres">ประเภท</a></li>
+    <li><a href="#movies">ผลงาน</a></li>
+    <li><a href="#about">เกี่ยวกับ</a></li>
+    <li><a href="#rate">ให้คะแนน</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+   <!-- ① วิดีโอพื้นหลัง — ใส่ชื่อไฟล์ให้ตรง -->
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="Screen Recording 2025-11-25 150739.mp4" type="video/mp4">
+  </video>
+  <div class="hero-badge">วิทยาลัยเทคนิคอุดรธานี · แผนกเทคโนโลยีคอมพิวเตอร์</div>
+  <h1 class="hero-title">TC<br><span class="accent">MOVIE</span></h1>
+  <p class="hero-sub">Short Films by Vocational Students</p>
+  <p class="hero-desc">รวบรวมผลงานภาพยนตร์สั้นของนักเรียน ปวช. และ ปวส. ที่สร้างสรรค์ขึ้นด้วยหัวใจและทักษะจริง</p>
+  <div class="hero-cta">
+    <a href="#movies" class="btn-primary">ชมผลงาน</a>
+    <a href="#rate" class="btn-outline">ให้คะแนนหนัง</a>
+  </div>
+  <div class="filmstrip" aria-hidden="true">
+    <!-- Film holes decoration -->
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  </div>
+</section>
+
+<!-- GENRES -->
+<section id="genres">
+  <div class="genres-overlay"></div>
+  <div class="genres-scanlines"></div>
+  <div class="genres-vignette"></div>
+  <div class="section-label">หมวดหมู่ภาพยนตร์</div>
+  <h2 class="section-title reveal valorant-text" data-text="MOVIE GENRES">MOVIE GENRES</h2>
+  <div class="divider"></div>
+  <div class="genres-grid reveal">
+    <!-- DRAMA -->
+    <a class="genre-card" href="#" onclick="filterMovies('DRAMA', null); return false;">
+      <img class="fade-img active" src="DRAMA.png" alt="">
+      <img class="fade-img" src="DRAMA1.png" alt="">
+      <img class="fade-img" src="DRAMA2.png" alt="">
+      <span class="genre-icon">🎭</span>
+      <div class="genre-name">Drama</div>
+      <div class="genre-count">ดราม่าน้ำ(ตา)แตก</div>
+    </a>
+    <!-- COMEDY -->
+    <a class="genre-card" href="#" onclick="filterMovies('COMEDY', null); return false;">
+      <img class="fade-img active" src="COMEDY.png" alt="">
+      <img class="fade-img" src="COMEDY1.png" alt="">
+      <img class="fade-img" src="COMEDY2.png" alt="">
+      <span class="genre-icon">😂</span>
+      <div class="genre-name">Comedy</div>
+      <div class="genre-count">ตลกฮาขี้แตก</div>
+    </a>
+    <!-- ROMANCE -->
+    <a class="genre-card" href="#" onclick="filterMovies('ROMANCE', null); return false;">
+      <img class="fade-img active" src="ROMANCE.png" alt="">
+      <img class="fade-img" src="ROMANCE1.png" alt="">
+      <img class="fade-img" src="ROMANCE2.png" alt="">
+      <span class="genre-icon">💛</span>
+      <div class="genre-name">Romance</div>
+      <div class="genre-count">รัก(เกือบ)โรแมนติก</div>
+    </a>
+    <!-- ACTION -->
+    <a class="genre-card" href="#" onclick="filterMovies('ACTION', null); return false;">
+      <img class="fade-img active" src="ACTION.png" alt="">
+      <img class="fade-img" src="ACTION2.png" alt="">
+      <img class="fade-img" src="ACTION1.png" alt="">
+      <span class="genre-icon">⚡</span>
+      <div class="genre-name">Action</div>
+      <div class="genre-count">แอ็กชัน..หรอวะ</div>
+    </a>
+    
+    <!-- HORROR -->
+    <a class="genre-card" href="#" onclick="filterMovies('HORROR', null); return false;">
+      <img class="fade-img active" src="DARK.png.png" alt="">
+      <img class="fade-img" src="DARK1.png" alt="">
+      <img class="fade-img" src="DARK2.png" alt="">
+      <span class="genre-icon">👁</span>
+      <div class="genre-name">Horror</div>
+      <div class="genre-count">สยองขวัญขน..ลุก</div>
+    </a>
+    <!-- TEASER -->
+    <a class="genre-card" href="#" onclick="filterMovies('TEASER', null); return false;">
+      <span class="genre-icon">🎬</span>
+      <div class="genre-name">Teaser</div>
+      <div class="genre-count">ตัวอย่างหนังไม่มีหรอก</div>
+    </a>
+  </div>
+</section>
+
+<!-- MOVIES -->
+<section id="movies">
+  <div class="section-label">ผลงานทั้งหมด</div>
+  <h2 class="section-title reveal">ALL FILMS</h2>
+  <div class="divider"></div>
+
+  <div class="movies-controls reveal">
+    <!-- Search -->
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="ค้นหาภาพยนตร์... / Search films..." oninput="handleSearch(this.value)">
+      <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+      <span class="search-icon">🔍</span>
+    </div>
+    <!-- Filter buttons -->
+    <div class="movies-filter" style="margin:0; flex-wrap:wrap;">
+      <button class="filter-btn active" onclick="filterMovies('ALL', this)">ทั้งหมด</button>
+      <button class="filter-btn" onclick="filterMovies('DRAMA', this)">DRAMA</button>
+      <button class="filter-btn" onclick="filterMovies('COMEDY', this)">COMEDY</button>
+      <button class="filter-btn" onclick="filterMovies('ROMANCE', this)">ROMANCE</button>
+      <button class="filter-btn" onclick="filterMovies('ACTION', this)">ACTION</button>
+      <button class="filter-btn" onclick="filterMovies('HORROR', this)">HORROR</button>
+      <button class="filter-btn" onclick="filterMovies('TEASER', this)">TEASER</button>
+    </div>
+  </div>
+
+  <div class="movies-grid" id="moviesGrid"></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">เกี่ยวกับโครงงาน</div>
+  <h2 class="section-title reveal">ABOUT</h2>
+  <div class="divider"></div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>เว็บไซต์นี้เป็นพื้นที่สำหรับรวบรวมและนำเสนอผลงานภาพยนตร์สั้นของนักศึกษาจากหลายรุ่น โดยมีเป้าหมายเพื่อให้ผู้ชมได้เรียนรู้แนวคิด เทคนิค และแรงบันดาลใจจากผลงานจริง</p>
+      <p>ผู้ชมสามารถเลือกดูผลงานจากแต่ละรุ่น คลิกเข้าไปเพื่อชมภาพยนตร์ และให้คะแนนเพื่อเป็นแรงบันดาลใจให้นักเรียนรุ่นต่อไปสร้างสรรค์ผลงานที่มีคุณภาพ</p>
+    </div>
+    <div class="reveal">
+      <ul class="team-list">
+        <li class="team-item">
+          <span class="team-num">01</span>
+          <div>
+            <div class="team-name">นายอธิวัฒน์ ธีระวิเชษฐ์กุล</div>
+            <div class="team-role">ปวช.3/2 เลขที่ 17 · ตกแต่งและออกแบบเว็บไซต์</div>
+          </div>
+        </li>
+        <li class="team-item">
+          <span class="team-num">02</span>
+          <div>
+            <div class="team-name">นายสุทัฎ โคตรแสนเมือง</div>
+            <div class="team-role">ปวช.3/2 เลขที่ 4 · เขียนโค้ดออกแบบระบบการให้คะแนน</div>
+          </div>
+        </li>
+        <li class="team-item">
+          <span class="team-num">03</span>
+          <div>
+            <div class="team-name">นายพีรพัฒน์ ยาผา</div>
+            <div class="team-role">ปวช.3/2 เลขที่ 5 · จัดการเอกสาร</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- RATE -->
+<section id="rate">
+   <div class="rate-overlay"></div>
+  <div class="rate-inner">
+    <div class="section-label">ร่วมเป็นส่วนหนึ่ง</div>
+    <h2 class="section-title reveal">RATE &amp; REVIEW</h2>
+    <div class="divider" style="margin: 1.5rem auto;"></div>
+    <p class="reveal">ช่วยให้คะแนนภาพยนตร์สั้นที่คุณชมเพื่อเป็นกำลังใจให้นักเรียน และช่วยพัฒนาคุณภาพของผลงานในรุ่นต่อไป</p>
+    <div class="reveal">
+      <a href="tc-movie-rating.html" class="btn-primary">ให้คะแนนภาพยนตร์สั้น</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">TC MOVIE</div>
+  <p>แผนกเทคโนโลยีคอมพิวเตอร์ · วิทยาลัยเทคนิคอุดรธานี · ปีการศึกษา 2568</p>
+</footer>
+<script>
+// Loader hide logic
+;(function(){
+  function hideLoader(){
+    const l = document.getElementById('site-loader');
+    if(!l) return;
+    l.setAttribute('aria-hidden','true');
+    setTimeout(()=>{ if(l && l.parentNode) l.parentNode.removeChild(l); }, 1200);
+  }
+  // If page already loaded
+  if(document.readyState === 'complete') return hideLoader();
+  window.addEventListener('load', ()=>{
+    // small delay to let visuals settle
+    setTimeout(hideLoader, 700);
+  });
+})();
+// ============================================================
+// DATA
+// ============================================================
+const movies = [
+  { id:'bak-khi-kha',   title: 'บักขี้ข้า',               titleEn: '',                         genre: 'DRAMA',   year: 2567, level: 'ปวช.', bg: '#1a0a0a', emoji: '🎭', cover: 'COMEDY1.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/บกขขา' },
+  { id:'rak-mak-ngai',  title: 'รักมักง่าย',               titleEn: '',                         genre: 'ROMANCE', year: 2567, level: 'ปวส.', bg: '#0a0a1a', emoji: '💛', cover: 'DRAMA3.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/รกมกงาย' },
+  { id:'khao-pradap',  title: 'ข้าวประดับดิน',            titleEn: '',                         genre: 'DRAMA',   year: 2567, level: 'ปวช.', bg: '#0a1a0a', emoji: '🌾', cover: 'HORROR4.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/ขาวประดบดน' },
+  { id:'cast-away',    title: 'Cast Away',                titleEn: "go'n fine a way",          genre: 'DRAMA',  year: 2567, level: 'ปวช.', bg: '#0a1015', emoji: '🎭', cover: 'DRAMA5.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/cast-away' },
+  { id:'the-6-sent',    title: 'The 6 Sent',               titleEn: 'เดอะ ซิกซ์ เซนท์',        genre: 'ACTION',  year: 2567, level: 'ปวช.', bg: '#0a0a1a', emoji: '👁', cover: 'DARK1.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/the-6-sent' },
+  { id:'last-memory',  title: 'Last Memory',              titleEn: 'ลาสท์ เมโมรี',             genre: 'DRAMA',   year: 2567, level: 'ปวช.', bg: '#1a0f0a', emoji: '🎭', cover: 'ROMANCE2.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/last-memory' },
+  { id:'siaw',        title: 'เสี่ยว',                   titleEn: '',                         genre: 'DRAMA',   year: 2567, level: 'ปวช.', bg: '#100a1a', emoji: '🎭', cover: 'COMEDY5.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/เสยว' },
+  { id:'the-eyes',     title: 'THE EYES',                 titleEn: 'ดิ อายส์',                 genre: 'HORROR',  year: 2567, level: 'ปวช.', bg: '#0f0a0a', emoji: '👁', cover: 'HORROR3.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/the-eyes' },
+  { id:'khao-tham',     title: 'เค้า"ทำแล้วได้อะไร"',     titleEn: '',                         genre: 'COMEDY',  year: 2567, level: 'ปวช.', bg: '#0a150a', emoji: '😂', cover: 'COMEDY3.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/เคาทำแลวไดอะไร' },
+  { id:'pou-movie',    title: 'POU MOVIE',                titleEn: 'หนังโป',                   genre: 'COMEDY',  year: 2568, level: 'ปวช.', bg: '#150a0a', emoji: '😂', cover: 'ACTION1.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/หนงโป' },
+  { id:'hak-bo-pho',    title: 'ฮัก(บ่)พอ',               titleEn: '',                         genre: 'ROMANCE', year: 2568, level: 'ปวส.', bg: '#0a0a18', emoji: '💛', cover: 'DRAMA2.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/ฮกบพอ' },
+  { id:'plai-thang',    title: 'ปลายทางรักหรือปลายทางนี้', titleEn: '',                        genre: 'ROMANCE', year: 2568, level: 'ปวช.', bg: '#0f0a14', emoji: '💛', cover: 'DRAMA4.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/ปลายทางรกหรอปลายทางหน' },
+  { id:'hod-namta',    title: 'หยดน้ำตากลางท่ง',          titleEn: '',                        genre: 'DRAMA',   year: 2568, level: 'ปวส.', bg: '#0a0f15', emoji: '🎭', cover: 'DRAMA1.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/หยดนาตากลางทง' },
+  { id:'friend-love',  title: 'FRIEND...I LOVE YOU',      titleEn: 'เพื่อนกูรักมึงหว่ะ',       genre: 'COMEDY',  year: 2568, level: 'ปวช.', bg: '#0a150f', emoji: '😂', cover: 'COMEDY2.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/friend-i-love-you' },
+  { id:'static',      title: 'STATIC สถิต',              titleEn: '',                         genre: 'HORROR',  year: 2568, level: 'ปวช.', bg: '#100a0a', emoji: '👁', cover: 'DARK2.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/สถต' },
+  { id:'bulete',      title: 'BULETE THE FIRST',         titleEn: 'บู๊เละเทะ เดอะเฟิร์ส',    genre: 'ACTION',  year: 2568, level: 'ปวช.', bg: '#0a100a', emoji: '⚡', cover: 'ACTION2.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/bulete-the-first' },
+];
+
+// ============================================================
+// RATINGS  (shared summary from tc-movie-rating)
+// ============================================================
+const ratingsStore = JSON.parse(localStorage.getItem('tcmovie_ratings') || '{}');
+
+function saveRatings() {
+  try { localStorage.setItem('tcmovie_ratings', JSON.stringify(ratingsStore)); } catch(e) {}
+}
+
+function normalizeRatingData(raw) {
+  if (!raw || typeof raw !== 'object') return { avg: 0, count: 0 };
+  if (typeof raw.sum === 'number' && typeof raw.count === 'number') {
+    return { avg: raw.count ? raw.sum / raw.count : 0, count: raw.count };
+  }
+  if (typeof raw.avg === 'number' && typeof raw.count === 'number') {
+    return { avg: raw.avg, count: raw.count };
+  }
+  return { avg: 0, count: 0 };
+}
+
+function getRating(id) {
+  return normalizeRatingData(ratingsStore[id]);
+}
+
+function starsHTML(id) {
+  const { avg, count } = getRating(id);
+  const lit = count ? Math.round(avg) : 0;
+  const stars = [1,2,3,4,5].map(i =>
+    `<span class="${i <= lit ? 'lit' : ''}">★</span>`
+  ).join('');
+  const avgText = count ? `${avg.toFixed(1)} ★` : 'ยังไม่มีคะแนน';
+  const cntText = count ? `(${count})` : '';
+  return `
+    <div class="movie-rating-row">
+      <div class="star-display" data-id="${id}">${stars}</div>
+      <span class="rating-avg">${avgText}</span>
+      <span class="rating-count">${cntText}</span>
+    </div>`;
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+let currentFilter = 'ALL';
+let currentSearch = '';
+
+function getFiltered() {
+  return movies.filter(m => {
+    const matchGenre = currentFilter === 'ALL' || m.genre === currentFilter;
+    const q = currentSearch.trim().toLowerCase();
+    const matchSearch = !q ||
+      m.title.toLowerCase().includes(q) ||
+      m.titleEn.toLowerCase().includes(q) ||
+      m.genre.toLowerCase().includes(q) ||
+      String(m.year).includes(q);
+    return matchGenre && matchSearch;
+  });
+}
+
+function renderMovies() {
+  const grid = document.getElementById('moviesGrid');
+  const filtered = getFiltered();
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="no-results">ไม่พบภาพยนตร์ที่ค้นหา · No films found</div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map(m => `
+    <div class="movie-card" onclick="window.open('${m.url}','_blank')">
+      <div class="movie-thumb" style="background:${m.bg};">
+        ${m.cover ? `<img class="movie-cover" src="${m.cover}" alt="${m.title} cover">` : ''}
+        ${!m.cover ? `<span class="movie-emoji">${m.emoji}</span>` : ''}
+      </div>
+      <div class="movie-info">
+        <div class="movie-genre-tag">${m.genre}</div>
+        <div class="movie-title">${m.title}</div>
+        ${m.titleEn ? `<div class="movie-title-th">${m.titleEn}</div>` : '<div class="movie-title-th" style="height:1.1rem"></div>'}
+        ${starsHTML(m.id)}
+        <div class="movie-meta">
+          <span>${m.level} · ปีการศึกษา ${m.year}</span>
+          <span class="movie-year">${m.year}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterMovies(genre, btn) {
+  currentFilter = genre;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderMovies();
+  document.getElementById('movies').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ============================================================
+// SEARCH
+// ============================================================
+function handleSearch(val) {
+  currentSearch = val;
+  document.getElementById('searchClear').style.display = val ? 'block' : 'none';
+  renderMovies();
+}
+
+function clearSearch() {
+  currentSearch = '';
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchClear').style.display = 'none';
+  renderMovies();
+}
+
+// ============================================================
+// GENRE CARD — IMAGE SLIDESHOW (fade per card)
+// ============================================================
+function initGenreCardSlideshows() {
+  document.querySelectorAll('.genre-card').forEach(card => {
+    const imgs = card.querySelectorAll('.fade-img');
+    if (imgs.length < 2) return; // ไม่ต้อง rotate ถ้ามีรูปเดียว
+    let current = 0;
+    setInterval(() => {
+      imgs[current].classList.remove('active');
+      current = (current + 1) % imgs.length;
+      imgs[current].classList.add('active');
+    }, 3000); // เปลี่ยนรูปทุก 3 วินาที (ปรับได้)
+  });
+}
+
+// ============================================================
+// INIT
+// ============================================================
+renderMovies();
+initGenreCardSlideshows();
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
