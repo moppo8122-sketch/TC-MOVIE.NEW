@@ -69,16 +69,12 @@
   }
   .bg-video {
     position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 177.78vh; /* 16:9 ratio */
-    height: 100vh;
-    min-width: 100%;
-    min-height: 56.25vw; /* 16:9 ratio */
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
     z-index: 0;
     opacity: 0.35;
     filter: brightness(0.5) saturate(1.2);
-    pointer-events: none;
   }
   .hero::before {
     content: '';
@@ -190,6 +186,55 @@
     letter-spacing: 4px;
     line-height: 1;
   }
+  #genres .section-title.valorant-text {
+    display: inline-block;
+    position: relative;
+    color: transparent;
+    background: linear-gradient(90deg, rgba(201,168,76,1) 0%, rgba(240,236,224,0.95) 40%, rgba(201,168,76,0.4) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: valorantShimmer 3s ease-in-out infinite;
+  }
+  #genres .section-title.valorant-text::before,
+  #genres .section-title.valorant-text::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    color: var(--gold);
+    opacity: 0.32;
+    z-index: -1;
+    pointer-events: none;
+  }
+  #genres .section-title.valorant-text::before {
+    transform: translate(-2px, -2px);
+    filter: blur(0.5px);
+    animation: valorantGlitchA 2.7s infinite linear;
+  }
+  #genres .section-title.valorant-text::after {
+    transform: translate(2px, 2px);
+    filter: blur(0.5px);
+    animation: valorantGlitchB 3.1s infinite linear reverse;
+  }
+  @keyframes valorantShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  @keyframes valorantGlitchA {
+    0%, 20%, 40%, 60%, 80%, 100% { transform: translate(-2px, -2px); }
+    10% { transform: translate(-5px, -1px); }
+    30% { transform: translate(1px, -3px); }
+    50% { transform: translate(-3px, 0px); }
+    70% { transform: translate(2px, -2px); }
+    90% { transform: translate(-1px, -4px); }
+  }
+  @keyframes valorantGlitchB {
+    0%, 20%, 40%, 60%, 80%, 100% { transform: translate(2px, 2px); }
+    10% { transform: translate(5px, 1px); }
+    30% { transform: translate(-1px, 3px); }
+    50% { transform: translate(3px, 0px); }
+    70% { transform: translate(-2px, 2px); }
+    90% { transform: translate(1px, 4px); }
+  }
   .divider {
     width: 60px; height: 2px;
     background: var(--gold);
@@ -210,31 +255,55 @@
     padding: 2.5rem 1.5rem;
     text-align: center;
     cursor: pointer;
-    transition: background 0.25s;
+    transition: border-color 0.25s;
     border: 1px solid transparent;
     text-decoration: none;
     display: block;
+    position: relative;
+    overflow: hidden;
   }
-  .genre-card:hover {
-    background: #222;
-    border-color: var(--gold);
+  .genre-card:hover { border-color: var(--gold); }
+  /* Dark overlay ทับรูป ให้ข้อความอ่านง่าย */
+  .genre-card::after {
+    content: '';
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.45) 0%, rgba(10,10,10,0.72) 100%);
+    transition: background 0.25s;
   }
+  .genre-card:hover::after {
+    background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.6) 100%);
+  }
+  /* รูปพื้นหลัง fade slideshow */
+  .fade-img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 0;
+  }
+  .fade-img.active { opacity: 1; }
+  /* content อยู่เหนือรูปและ overlay */
   .genre-icon {
     font-size: 2.5rem;
     margin-bottom: 1rem;
     display: block;
+    position: relative; z-index: 2;
   }
   .genre-name {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.4rem;
     letter-spacing: 3px;
     color: var(--text);
+    position: relative; z-index: 2;
   }
   .genre-count {
     font-size: 0.75rem;
-    color: var(--muted);
+    color: rgba(240,236,224,0.75);
     margin-top: 0.4rem;
     letter-spacing: 1px;
+    position: relative; z-index: 2;
   }
 
   /* MOVIES */
@@ -276,16 +345,29 @@
   .movie-card:hover { transform: translateY(-4px); border-color: var(--gold); }
   .movie-thumb {
     width: 100%;
-    height: 180px;
+    height: 220px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 3rem;
     position: relative;
     overflow: hidden;
+    background: var(--bg3);
+  }
+  .movie-cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .movie-thumb::after {
     content: '';
     position: absolute; inset: 0;
-    background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.7));
+    background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.75));
+  }
+  .movie-thumb .movie-emoji {
+    position: relative;
+    z-index: 2;
+    font-size: 3rem;
+    color: var(--text);
   }
   .movie-info { padding: 1rem 1.2rem 1.2rem; }
   .movie-genre-tag {
@@ -351,7 +433,7 @@
     display: flex; align-items: flex-start; gap: 1rem;
     padding: 1rem 0;
     border-bottom: 1px solid var(--border);
-  }
+  } 
   .team-num {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.8rem;
@@ -363,7 +445,30 @@
   .team-role { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
 
   /* RATE */
-  #rate { background: var(--bg); text-align: center; }
+  #rate {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+    text-align: center;
+  }
+  #rate > * { position: relative; z-index: 3; }
+  .rate-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.35;
+    filter: brightness(0.45) saturate(1.1);
+    z-index: 0;
+  }
+  .rate-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(10,10,10,0.65) 0%, rgba(10,10,10,0.8) 35%, rgba(10,10,10,0.95) 100%);
+    pointer-events: none;
+  }
   .rate-inner { max-width: 560px; margin: 0 auto; }
   .rate-inner p { color: var(--muted); margin: 1rem 0 2.5rem; line-height: 1.8; }
 
@@ -401,7 +506,7 @@
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--gold-dim); }
 
-  /* === POSTER SLIDESHOW BACKGROUND (genres) === */
+  /* === VIDEO BACKGROUND (genres) === */
   #genres {
     position: relative;
     overflow: hidden;
@@ -409,50 +514,21 @@
   }
   #genres > * { position: relative; z-index: 3; }
 
-  /* Slideshow container */
-  .genres-slideshow {
+  /* วิดีโอพื้นหลัง */
+  .genres-video {
     position: absolute; inset: 0; z-index: 0;
-  }
-  .slide-poster {
-    position: absolute; inset: 0;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity 1.2s ease;
-    /* Ken Burns: each slide gets its own animation via class */
-  }
-  .slide-poster.active { opacity: 1; }
-
-  /* Ken Burns variants */
-  .kb-1 { animation: kb1 8s ease-in-out infinite alternate; }
-  .kb-2 { animation: kb2 9s ease-in-out infinite alternate; }
-  .kb-3 { animation: kb3 10s ease-in-out infinite alternate; }
-  .kb-4 { animation: kb4 8s ease-in-out infinite alternate; }
-
-  @keyframes kb1 {
-    from { transform: scale(1.0) translate(0,   0);   }
-    to   { transform: scale(1.12) translate(-2%, -2%); }
-  }
-  @keyframes kb2 {
-    from { transform: scale(1.08) translate(2%, 1%);  }
-    to   { transform: scale(1.0)  translate(0,  2%);  }
-  }
-  @keyframes kb3 {
-    from { transform: scale(1.0)  translate(-1%, 2%); }
-    to   { transform: scale(1.12) translate(2%, -1%); }
-  }
-  @keyframes kb4 {
-    from { transform: scale(1.1)  translate(1%, -2%); }
-    to   { transform: scale(1.0)  translate(-2%, 1%); }
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.45;
+    filter: brightness(0.5) saturate(1.2);
   }
 
-  /* Dark + color overlay so text is legible */
+  /* Dark overlay ทับวิดีโอ */
   .genres-overlay {
     position: absolute; inset: 0; z-index: 1;
-    background:
-      linear-gradient(135deg, rgba(10,10,10,0.78) 0%, rgba(10,10,10,0.55) 100%);
+    background: linear-gradient(135deg, rgba(10,10,10,0.78) 0%, rgba(10,10,10,0.55) 100%);
   }
-  /* Scanline texture on top */
+  /* Scanline texture */
   .genres-scanlines {
     position: absolute; inset: 0; z-index: 2;
     background: repeating-linear-gradient(
@@ -461,33 +537,14 @@
     );
     pointer-events: none;
   }
-  /* Gold vignette edges */
+  /* Vignette */
   .genres-vignette {
     position: absolute; inset: 0; z-index: 2;
     box-shadow: inset 0 0 120px rgba(0,0,0,0.6);
     pointer-events: none;
   }
 
-  /* Slide dots indicator */
-  .slide-dots {
-    position: absolute; bottom: 18px; left: 50%;
-    transform: translateX(-50%);
-    display: flex; gap: 8px; z-index: 4;
-  }
-  .slide-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: rgba(201,168,76,0.35);
-    border: 1px solid rgba(201,168,76,0.6);
-    cursor: pointer;
-    transition: background 0.3s, transform 0.3s;
-  }
-  .slide-dot.active {
-    background: var(--gold);
-    transform: scale(1.4);
-  }
-
-  /* genre cards — make semi-transparent so bg shows */
+  /* genre cards — semi-transparent ให้วิดีโอโชว์ */
   .genre-card {
     background: rgba(26,26,26,0.55) !important;
     backdrop-filter: blur(6px);
@@ -570,29 +627,35 @@
     color: var(--muted); font-size: 0.9rem; letter-spacing: 2px;
     grid-column: 1/-1;
   }
-
-  /* === GENRE CARD FADE IMAGES === */
-  .genre-card {
-    position: relative;
-    overflow: hidden;
-  }
-  .fade-img {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 1.2s ease-in-out;
-    z-index: 0;
-  }
-  .fade-img.active { opacity: 0.45; }
-  .genre-card-content {
-    position: relative;
-    z-index: 1;
-  }
+  /* SITE LOADER (Genshin-like) */
+  #site-loader { position: fixed; inset: 0; z-index: 9999; display:flex; align-items:center; justify-content:center; background: linear-gradient(180deg, rgba(4,4,6,0.95), rgba(4,4,6,0.85)); transition: opacity 0.8s ease, visibility 0.8s; }
+  #site-loader[aria-hidden="true"] { opacity:0; visibility:hidden; pointer-events:none; }
+  #site-loader .loader-bg { position:absolute; inset:0; background: radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, rgba(0,0,0,0.5) 60%), url('') center/cover no-repeat; filter: blur(8px) contrast(1.05); }
+  .loader-inner { position:relative; z-index:2; text-align:center; color:var(--text); padding:24px; }
+  .loader-ring { width:100px; height:100px; border-radius:50%; margin:0 auto 14px; box-shadow: 0 0 30px rgba(201,168,76,0.12) inset; position:relative; }
+  .loader-ring::before { content:''; position:absolute; inset:6px; border-radius:50%; background: linear-gradient(90deg, rgba(201,168,76,0.06), rgba(240,236,224,0.02)); }
+  .loader-ring::after { content:''; position:absolute; left:50%; top:50%; width:14px; height:14px; transform:translate(-50%,-50%); border-radius:50%; background:var(--gold); box-shadow:0 0 18px var(--gold); animation: loaderPulse 1.6s infinite ease-in-out; }
+  .loader-logo { font-family: 'Bebas Neue', sans-serif; font-size: 2.6rem; letter-spacing:6px; margin-bottom:6px; color:var(--text); }
+  .loader-logo span { color:var(--gold); }
+  .loader-sub { color:var(--muted); font-size:0.9rem; margin-bottom:10px; }
+  .loader-dots span { display:inline-block; width:8px; height:8px; background:var(--gold); border-radius:50%; margin:0 6px; opacity:0.2; animation: loaderDots 1s infinite steps(3,end); }
+  .loader-dots span:nth-child(2){ animation-delay:0.15s } .loader-dots span:nth-child(3){ animation-delay:0.3s }
+  @keyframes loaderPulse { 0%{ transform:translate(-50%,-50%) scale(1); opacity:0.9 } 50%{ transform:translate(-50%,-50%) scale(1.5); opacity:1 } 100%{ transform:translate(-50%,-50%) scale(1); opacity:0.9 } }
+  @keyframes loaderDots { 0%{ opacity:0.2; transform:translateY(0) } 50%{ opacity:1; transform:translateY(-8px) } 100%{ opacity:0.2; transform:translateY(0) } }
 </style>
 </head>
 <body>
+
+<!-- SITE LOADER -->
+<div id="site-loader" aria-hidden="false">
+  <div class="loader-bg"></div>
+  <div class="loader-inner">
+    <div class="loader-ring" aria-hidden="true"></div>
+    <div class="loader-logo">TC<span>MOVIE</span></div>
+    <div class="loader-sub">Short Films Loading</div>
+    <div class="loader-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+  </div>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -634,63 +697,64 @@
 
 <!-- GENRES -->
 <section id="genres">
-  <!-- Poster Slideshow Background -->
-  <div class="genres-slideshow" id="genresSlideshow">
-    <!-- Slides injected by JS using poster image paths -->
-  </div>
   <div class="genres-overlay"></div>
   <div class="genres-scanlines"></div>
   <div class="genres-vignette"></div>
-  <div class="slide-dots" id="slideDots"></div>
   <div class="section-label">หมวดหมู่ภาพยนตร์</div>
-  <h2 class="section-title reveal">MOVIE GENRES</h2>
+  <h2 class="section-title reveal valorant-text" data-text="MOVIE GENRES">MOVIE GENRES</h2>
   <div class="divider"></div>
   <div class="genres-grid reveal">
-    <a class="genre-card" href="#" onclick="filterMovies('DRAMA'); return false;">
-      <div class="genre-card-content">
-        <span class="genre-icon">🎭</span>
-        <div class="genre-name">Drama</div>
-        <div class="genre-count">ดราม่าน้ำ(ตา)แตก</div>
-      </div>
+    <!-- DRAMA -->
+    <a class="genre-card" href="#" onclick="filterMovies('DRAMA', null); return false;">
+      <img class="fade-img active" src="DRAMA.png" alt="">
+      <img class="fade-img" src="DRAMA1.png" alt="">
+      <img class="fade-img" src="DRAMA2.png" alt="">
+      <span class="genre-icon">🎭</span>
+      <div class="genre-name">Drama</div>
+      <div class="genre-count">ดราม่าน้ำ(ตา)แตก</div>
     </a>
-    <a class="genre-card" href="#" onclick="filterMovies('COMEDY'); return false;">
-      <div class="genre-card-content">
-        <span class="genre-icon">😂</span>
-        <div class="genre-name">Comedy</div>
-        <div class="genre-count">ตลกฮาขี้แตก</div>
-      </div>
+    <!-- COMEDY -->
+    <a class="genre-card" href="#" onclick="filterMovies('COMEDY', null); return false;">
+      <img class="fade-img active" src="COMEDY.png" alt="">
+      <img class="fade-img" src="COMEDY1.png" alt="">
+      <img class="fade-img" src="COMEDY2.png" alt="">
+      <span class="genre-icon">😂</span>
+      <div class="genre-name">Comedy</div>
+      <div class="genre-count">ตลกฮาขี้แตก</div>
     </a>
-    <a class="genre-card" href="#" onclick="filterMovies('ROMANCE'); return false;">
-      <img class="fade-img active" src="posterscastaway.png">
-      <div class="genre-card-content">
-        <span class="genre-icon">💛</span>
-        <div class="genre-name">Romance</div>
-        <div class="genre-count">รัก(เกือบ)โรแมนติก</div>
-      </div>
+    <!-- ROMANCE -->
+    <a class="genre-card" href="#" onclick="filterMovies('ROMANCE', null); return false;">
+      <img class="fade-img active" src="ROMANCE.png" alt="">
+      <img class="fade-img" src="ROMANCE1.png" alt="">
+      <img class="fade-img" src="ROMANCE2.png" alt="">
+      <span class="genre-icon">💛</span>
+      <div class="genre-name">Romance</div>
+      <div class="genre-count">รัก(เกือบ)โรแมนติก</div>
     </a>
-    <a class="genre-card" href="#" onclick="filterMovies('ACTION'); return false;">
-      <img class="fade-img active" src="postersbulete.png">
-      <img class="fade-img" src="posterspoumovie.png">
-      <div class="genre-card-content">
-        <span class="genre-icon">⚡</span>
-        <div class="genre-name">Action</div>
-        <div class="genre-count">แอ็กชัน..หรอวะ</div>
-      </div>
+    <!-- ACTION -->
+    <a class="genre-card" href="#" onclick="filterMovies('ACTION', null); return false;">
+      <img class="fade-img active" src="ACTION.png" alt="">
+      <img class="fade-img" src="ACTION2.png" alt="">
+      <img class="fade-img" src="ACTION1.png" alt="">
+      <span class="genre-icon">⚡</span>
+      <div class="genre-name">Action</div>
+      <div class="genre-count">แอ็กชัน..หรอวะ</div>
     </a>
-    <a class="genre-card" href="#" onclick="filterMovies('HORROR'); return false;">
-      <img class="fade-img active" src="postersthe6sent.png">
-      <div class="genre-card-content">
-        <span class="genre-icon">👁</span>
-        <div class="genre-name">Horror</div>
-        <div class="genre-count">สยองขวัญขน..ลุก</div>
-      </div>
+    
+    <!-- HORROR -->
+    <a class="genre-card" href="#" onclick="filterMovies('HORROR', null); return false;">
+      <img class="fade-img active" src="DARK.png.png" alt="">
+      <img class="fade-img" src="DARK1.png" alt="">
+      <img class="fade-img" src="DARK2.png" alt="">
+      <span class="genre-icon">👁</span>
+      <div class="genre-name">Horror</div>
+      <div class="genre-count">สยองขวัญขน..ลุก</div>
     </a>
-    <a class="genre-card" href="#" onclick="filterMovies('TEASER'); return false;">
-      <div class="genre-card-content">
-        <span class="genre-icon">🎬</span>
-        <div class="genre-name">Teaser</div>
-        <div class="genre-count">ตัวอย่างหนังไม่มีหรอก</div>
-      </div>
+    <!-- TEASER -->
+    <a class="genre-card" href="#" onclick="filterMovies('TEASER', null); return false;">
+      <span class="genre-icon">🎬</span>
+      <div class="genre-name">Teaser</div>
+      <div class="genre-count">ตัวอย่างหนังไม่มีหรอก</div>
     </a>
   </div>
 </section>
@@ -760,9 +824,9 @@
     </div>
   </div>
 </section>
-
 <!-- RATE -->
 <section id="rate">
+   <div class="rate-overlay"></div>
   <div class="rate-inner">
     <div class="section-label">ร่วมเป็นส่วนหนึ่ง</div>
     <h2 class="section-title reveal">RATE &amp; REVIEW</h2>
@@ -779,32 +843,46 @@
   <div class="footer-logo">TC MOVIE</div>
   <p>แผนกเทคโนโลยีคอมพิวเตอร์ · วิทยาลัยเทคนิคอุดรธานี · ปีการศึกษา 2568</p>
 </footer>
-
 <script>
+// Loader hide logic
+;(function(){
+  function hideLoader(){
+    const l = document.getElementById('site-loader');
+    if(!l) return;
+    l.setAttribute('aria-hidden','true');
+    setTimeout(()=>{ if(l && l.parentNode) l.parentNode.removeChild(l); }, 1200);
+  }
+  // If page already loaded
+  if(document.readyState === 'complete') return hideLoader();
+  window.addEventListener('load', ()=>{
+    // small delay to let visuals settle
+    setTimeout(hideLoader, 700);
+  });
+})();
 // ============================================================
 // DATA
 // ============================================================
 const movies = [
-  { id:'bakkhikha',   title: 'บักขี้ข้า',               titleEn: '',                         genre: 'DRAMA',   year: 2567, level: 'ปวช.', bg: '#1a0a0a', emoji: '🎭', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/บกขขา' },
-  { id:'rakmagngai',  title: 'รักมักง่าย',               titleEn: '',                         genre: 'ROMANCE', year: 2567, level: 'ปวส.', bg: '#0a0a1a', emoji: '💛', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/รกมกงาย' },
-  { id:'khaoprabad',  title: 'ข้าวประดับดิน',            titleEn: '',                         genre: 'DRAMA',   year: 2567, level: 'ปวช.', bg: '#0a1a0a', emoji: '🌾', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/ขาวประดบดน' },
-  { id:'castaway',    title: 'Cast Away',                titleEn: "go'n fine a way",          genre: 'ACTION',  year: 2567, level: 'ปวช.', bg: '#0a1015', emoji: '⚡', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/cast-away' },
-  { id:'the6sent',    title: 'The 6 Sent',               titleEn: 'เดอะ ซิกซ์ เซนท์',        genre: 'ACTION',  year: 2567, level: 'ปวช.', bg: '#0a0a1a', emoji: '⚡', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/the-6-sent' },
-  { id:'lastmemory',  title: 'Last Memory',              titleEn: 'ลาสท์ เมโมรี',             genre: 'DRAMA',   year: 2567, level: 'ปวช.', bg: '#1a0f0a', emoji: '🎭', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/last-memory' },
-  { id:'siao',        title: 'เสี่ยว',                   titleEn: '',                         genre: 'DRAMA',   year: 2567, level: 'ปวช.', bg: '#100a1a', emoji: '🎭', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/เสยว' },
-  { id:'theeyes',     title: 'THE EYES',                 titleEn: 'ดิ อายส์',                 genre: 'HORROR',  year: 2567, level: 'ปวช.', bg: '#0f0a0a', emoji: '👁', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/the-eyes' },
-  { id:'kaotham',     title: 'เค้า"ทำแล้วได้อะไร"',     titleEn: '',                         genre: 'COMEDY',  year: 2567, level: 'ปวช.', bg: '#0a150a', emoji: '😂', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/เคาทำแลวไดอะไร' },
-  { id:'poumovie',    title: 'POU MOVIE',                titleEn: 'หนังโป',                   genre: 'COMEDY',  year: 2568, level: 'ปวช.', bg: '#150a0a', emoji: '😂', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/หนงโป' },
-  { id:'hakbopor',    title: 'ฮัก(บ่)พอ',               titleEn: '',                         genre: 'ROMANCE', year: 2568, level: 'ปวส.', bg: '#0a0a18', emoji: '💛', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/ฮกบพอ' },
-  { id:'plaitang',    title: 'ปลายทางรักหรือปลายทางนี้', titleEn: '',                        genre: 'ROMANCE', year: 2568, level: 'ปวช.', bg: '#0f0a14', emoji: '💛', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/ปลายทางรกหรอปลายทางหน' },
-  { id:'yodnamta',    title: 'หยดน้ำตากลางท่ง',          titleEn: '',                        genre: 'DRAMA',   year: 2568, level: 'ปวส.', bg: '#0a0f15', emoji: '🎭', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/หยดนาตากลางทง' },
-  { id:'friendlove',  title: 'FRIEND...I LOVE YOU',      titleEn: 'เพื่อนกูรักมึงหว่ะ',       genre: 'COMEDY',  year: 2568, level: 'ปวช.', bg: '#0a150f', emoji: '😂', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/friend-i-love-you' },
-  { id:'static',      title: 'STATIC สถิต',              titleEn: '',                         genre: 'HORROR',  year: 2568, level: 'ปวช.', bg: '#100a0a', emoji: '👁', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/สถต' },
-  { id:'bulete',      title: 'BULETE THE FIRST',         titleEn: 'บู๊เละเทะ เดอะเฟิร์ส',    genre: 'ACTION',  year: 2568, level: 'ปวช.', bg: '#0a100a', emoji: '⚡', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/bulete-the-first' },
+  { id:'bak-khi-kha',   title: 'บักขี้ข้า',               titleEn: '',                         genre: 'DRAMA',   year: 2567, level: 'ปวช.', bg: '#1a0a0a', emoji: '🎭', cover: 'COMEDY1.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/บกขขา' },
+  { id:'rak-mak-ngai',  title: 'รักมักง่าย',               titleEn: '',                         genre: 'ROMANCE', year: 2567, level: 'ปวส.', bg: '#0a0a1a', emoji: '💛', cover: 'DRAMA3.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/รกมกงาย' },
+  { id:'khao-pradap',  title: 'ข้าวประดับดิน',            titleEn: '',                         genre: 'DRAMA',   year: 2567, level: 'ปวช.', bg: '#0a1a0a', emoji: '🌾', cover: 'HORROR4.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/ขาวประดบดน' },
+  { id:'cast-away',    title: 'Cast Away',                titleEn: "go'n fine a way",          genre: 'DRAMA',  year: 2567, level: 'ปวช.', bg: '#0a1015', emoji: '🎭', cover: 'DRAMA5.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/cast-away' },
+  { id:'the-6-sent',    title: 'The 6 Sent',               titleEn: 'เดอะ ซิกซ์ เซนท์',        genre: 'ACTION',  year: 2567, level: 'ปวช.', bg: '#0a0a1a', emoji: '👁', cover: 'DARK1.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/the-6-sent' },
+  { id:'last-memory',  title: 'Last Memory',              titleEn: 'ลาสท์ เมโมรี',             genre: 'DRAMA',   year: 2567, level: 'ปวช.', bg: '#1a0f0a', emoji: '🎭', cover: 'ROMANCE2.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/last-memory' },
+  { id:'siaw',        title: 'เสี่ยว',                   titleEn: '',                         genre: 'DRAMA',   year: 2567, level: 'ปวช.', bg: '#100a1a', emoji: '🎭', cover: 'COMEDY5.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/เสยว' },
+  { id:'the-eyes',     title: 'THE EYES',                 titleEn: 'ดิ อายส์',                 genre: 'HORROR',  year: 2567, level: 'ปวช.', bg: '#0f0a0a', emoji: '👁', cover: 'HORROR3.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/the-eyes' },
+  { id:'khao-tham',     title: 'เค้า"ทำแล้วได้อะไร"',     titleEn: '',                         genre: 'COMEDY',  year: 2567, level: 'ปวช.', bg: '#0a150a', emoji: '😂', cover: 'COMEDY3.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/เคาทำแลวไดอะไร' },
+  { id:'pou-movie',    title: 'POU MOVIE',                titleEn: 'หนังโป',                   genre: 'COMEDY',  year: 2568, level: 'ปวช.', bg: '#150a0a', emoji: '😂', cover: 'ACTION1.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/หนงโป' },
+  { id:'hak-bo-pho',    title: 'ฮัก(บ่)พอ',               titleEn: '',                         genre: 'ROMANCE', year: 2568, level: 'ปวส.', bg: '#0a0a18', emoji: '💛', cover: 'DRAMA2.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/ฮกบพอ' },
+  { id:'plai-thang',    title: 'ปลายทางรักหรือปลายทางนี้', titleEn: '',                        genre: 'ROMANCE', year: 2568, level: 'ปวช.', bg: '#0f0a14', emoji: '💛', cover: 'DRAMA4.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/ปลายทางรกหรอปลายทางหน' },
+  { id:'hod-namta',    title: 'หยดน้ำตากลางท่ง',          titleEn: '',                        genre: 'DRAMA',   year: 2568, level: 'ปวส.', bg: '#0a0f15', emoji: '🎭', cover: 'DRAMA1.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/หยดนาตากลางทง' },
+  { id:'friend-love',  title: 'FRIEND...I LOVE YOU',      titleEn: 'เพื่อนกูรักมึงหว่ะ',       genre: 'COMEDY',  year: 2568, level: 'ปวช.', bg: '#0a150f', emoji: '😂', cover: 'COMEDY2.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/friend-i-love-you' },
+  { id:'static',      title: 'STATIC สถิต',              titleEn: '',                         genre: 'HORROR',  year: 2568, level: 'ปวช.', bg: '#100a0a', emoji: '👁', cover: 'DARK2.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/สถต' },
+  { id:'bulete',      title: 'BULETE THE FIRST',         titleEn: 'บู๊เละเทะ เดอะเฟิร์ส',    genre: 'ACTION',  year: 2568, level: 'ปวช.', bg: '#0a100a', emoji: '⚡', cover: 'ACTION2.png', url: 'https://sites.google.com/udontech.ac.th/tcmoviewebsite/bulete-the-first' },
 ];
 
 // ============================================================
-// RATINGS  (stored in memory; persists in session)
+// RATINGS  (shared summary from tc-movie-rating)
 // ============================================================
 const ratingsStore = JSON.parse(localStorage.getItem('tcmovie_ratings') || '{}');
 
@@ -812,49 +890,29 @@ function saveRatings() {
   try { localStorage.setItem('tcmovie_ratings', JSON.stringify(ratingsStore)); } catch(e) {}
 }
 
-function getRating(id) {
-  return ratingsStore[id] || { sum: 0, count: 0, userRating: 0 };
-}
-
-function rateMovie(id, stars, event) {
-  event.stopPropagation();
-  const r = getRating(id);
-  if (r.userRating) {
-    r.sum = r.sum - r.userRating + stars;
-  } else {
-    r.sum += stars; r.count += 1;
+function normalizeRatingData(raw) {
+  if (!raw || typeof raw !== 'object') return { avg: 0, count: 0 };
+  if (typeof raw.sum === 'number' && typeof raw.count === 'number') {
+    return { avg: raw.count ? raw.sum / raw.count : 0, count: raw.count };
   }
-  r.userRating = stars;
-  ratingsStore[id] = r;
-  saveRatings();
-  // Re-render just that card's stars
-  updateStarDisplay(id);
+  if (typeof raw.avg === 'number' && typeof raw.count === 'number') {
+    return { avg: raw.avg, count: raw.count };
+  }
+  return { avg: 0, count: 0 };
 }
 
-function updateStarDisplay(id) {
-  const row = document.querySelector(`.star-display[data-id="${id}"]`);
-  if (!row) return;
-  const r = getRating(id);
-  const avg = r.count ? (r.sum / r.count) : 0;
-  const user = r.userRating;
-  row.querySelectorAll('span').forEach((s, i) => {
-    s.classList.toggle('lit', i < (user || Math.round(avg)));
-  });
-  const countEl = row.closest('.movie-rating-row').querySelector('.rating-count');
-  const avgEl   = row.closest('.movie-rating-row').querySelector('.rating-avg');
-  countEl.textContent = r.count ? `(${r.count})` : '';
-  avgEl.textContent   = r.count ? (r.sum/r.count).toFixed(1) + ' ★' : 'ให้คะแนน';
+function getRating(id) {
+  return normalizeRatingData(ratingsStore[id]);
 }
 
 function starsHTML(id) {
-  const r = getRating(id);
-  const avg = r.count ? (r.sum / r.count) : 0;
-  const lit = r.userRating || Math.round(avg);
+  const { avg, count } = getRating(id);
+  const lit = count ? Math.round(avg) : 0;
   const stars = [1,2,3,4,5].map(i =>
-    `<span class="${i <= lit ? 'lit' : ''}" onclick="rateMovie('${id}',${i},event)" title="${i} ดาว">★</span>`
+    `<span class="${i <= lit ? 'lit' : ''}">★</span>`
   ).join('');
-  const avgText = r.count ? `${(r.sum/r.count).toFixed(1)} ★` : 'ให้คะแนน';
-  const cntText = r.count ? `(${r.count})` : '';
+  const avgText = count ? `${avg.toFixed(1)} ★` : 'ยังไม่มีคะแนน';
+  const cntText = count ? `(${count})` : '';
   return `
     <div class="movie-rating-row">
       <div class="star-display" data-id="${id}">${stars}</div>
@@ -891,7 +949,10 @@ function renderMovies() {
   }
   grid.innerHTML = filtered.map(m => `
     <div class="movie-card" onclick="window.open('${m.url}','_blank')">
-      <div class="movie-thumb" style="background:${m.bg};">${m.emoji}</div>
+      <div class="movie-thumb" style="background:${m.bg};">
+        ${m.cover ? `<img class="movie-cover" src="${m.cover}" alt="${m.title} cover">` : ''}
+        ${!m.cover ? `<span class="movie-emoji">${m.emoji}</span>` : ''}
+      </div>
       <div class="movie-info">
         <div class="movie-genre-tag">${m.genre}</div>
         <div class="movie-title">${m.title}</div>
@@ -931,79 +992,26 @@ function clearSearch() {
 }
 
 // ============================================================
-// POSTER SLIDESHOW for genres background
+// GENRE CARD — IMAGE SLIDESHOW (fade per card)
 // ============================================================
-// ใส่ path รูปโปสเตอร์ของคุณตรงนี้
-// (ถ้าไฟล์อยู่ folder เดียวกับ index.html ใช้ชื่อไฟล์ได้เลย)
-const posterImages = [
-  'Gemini_Generated_Image_7ota2q7ota2q7ota.png',   // BULETE THE FIRST
-  'Screenshot_2026-05-27_151350.png',               // Cast Away
-  'Screenshot_2026-05-27_151407.png',               // The 6 Sent
-  'Screenshot_2026-05-27_151423.png',               // POU MOVIE
-];
-
-// Ken Burns animation classes — cycles through slides
-const kbClasses = ['kb-1','kb-2','kb-3','kb-4'];
-
-function buildGenresBg() {
-  const slideshow = document.getElementById('genresSlideshow');
-  const dotsWrap  = document.getElementById('slideDots');
-  let current = 0;
-  let timer;
-
-  // Build slide elements
-  const slides = posterImages.map((src, i) => {
-    const div = document.createElement('div');
-    div.className = `slide-poster ${kbClasses[i % kbClasses.length]}`;
-    div.style.backgroundImage = `url('${src}')`;
-    if (i === 0) div.classList.add('active');
-    slideshow.appendChild(div);
-    return div;
+function initGenreCardSlideshows() {
+  document.querySelectorAll('.genre-card').forEach(card => {
+    const imgs = card.querySelectorAll('.fade-img');
+    if (imgs.length < 2) return; // ไม่ต้อง rotate ถ้ามีรูปเดียว
+    let current = 0;
+    setInterval(() => {
+      imgs[current].classList.remove('active');
+      current = (current + 1) % imgs.length;
+      imgs[current].classList.add('active');
+    }, 3000); // เปลี่ยนรูปทุก 3 วินาที (ปรับได้)
   });
-
-  // Build dots
-  const dots = posterImages.map((_, i) => {
-    const d = document.createElement('div');
-    d.className = `slide-dot${i === 0 ? ' active' : ''}`;
-    d.addEventListener('click', () => goTo(i));
-    dotsWrap.appendChild(d);
-    return d;
-  });
-
-  function goTo(idx) {
-    slides[current].classList.remove('active');
-    dots[current].classList.remove('active');
-    current = (idx + slides.length) % slides.length;
-    slides[current].classList.add('active');
-    dots[current].classList.add('active');
-    clearInterval(timer);
-    timer = setInterval(next, 4500);
-  }
-
-  function next() { goTo(current + 1); }
-
-  timer = setInterval(next, 4500);
 }
 
 // ============================================================
 // INIT
 // ============================================================
 renderMovies();
-buildGenresBg();
-
-// Fade between Action card images (postersbulete / posterspoumovie)
-(function() {
-  const actionCard = document.querySelector('#genres .genre-card:nth-child(4)');
-  if (!actionCard) return;
-  const imgs = actionCard.querySelectorAll('.fade-img');
-  if (imgs.length < 2) return;
-  let cur = 0;
-  setInterval(() => {
-    imgs[cur].classList.remove('active');
-    cur = (cur + 1) % imgs.length;
-    imgs[cur].classList.add('active');
-  }, 3000);
-})();
+initGenreCardSlideshows();
 
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
