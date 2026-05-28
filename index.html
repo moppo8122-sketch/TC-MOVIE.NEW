@@ -672,7 +672,7 @@
 <section class="hero">
    <!-- ① วิดีโอพื้นหลัง — ใส่ชื่อไฟล์ให้ตรง -->
   <video class="bg-video" autoplay muted loop playsinline>
-    <source src="https://drive.google.com/file/d/1sWVusAddqdacj_mqli6E77A6uBk2_Nqx/view?usp=sharing" type="video/mp4">
+    <source src="F1 Background.mp4" type="video/mp4">
   </video>
   <div class="hero-badge">วิทยาลัยเทคนิคอุดรธานี · แผนกเทคโนโลยีคอมพิวเตอร์</div>
   <h1 class="hero-title">TC<br><span class="accent">MOVIE</span></h1>
@@ -1017,6 +1017,112 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+<audio id="bgm" src="Alice In Chains Nutshell Official Audio.mp3" loop></audio>
+
+<button id="musicBtn" onclick="toggleMusic()" title="เปิด/ปิดเพลง" style="
+  position: fixed;
+  bottom: 24px; right: 24px;
+  z-index: 9999;
+  background: rgba(10,10,10,0.85);
+  border: 1px solid rgba(201,168,76,0.2);
+  color: #666;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+">▶</button>
+
+<!-- Volume Controls -->
+<div id="volumeControl" style="
+  position: fixed;
+  bottom: 24px; right: 90px;
+  z-index: 9999;
+  display: flex; gap: 10px; align-items: center;
+  background: rgba(10,10,10,0.85);
+  border: 1px solid rgba(201,168,76,0.3);
+  padding: 8px 12px;
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+">
+  <button onclick="decreaseVolume()" style="
+    background: transparent; border: none; color: #c9a84c;
+    font-size: 1.1rem; cursor: pointer;
+  ">−</button>
+  
+  <input id="volumeSlider" type="range" min="0" max="100" value="50"
+    onchange="setVolume(this.value)" oninput="setVolume(this.value)"
+    style="
+    width: 100px; height: 5px;
+    cursor: pointer;
+    accent-color: #c9a84c;
+  ">
+  
+  <button onclick="increaseVolume()" style="
+    background: transparent; border: none; color: #c9a84c;
+    font-size: 1.1rem; cursor: pointer;
+  ">+</button>
+</div>
+
+<script>
+let musicOn = false;
+
+function toggleMusic() {
+  const audio = document.getElementById('bgm');
+  const btn = document.getElementById('musicBtn');
+
+  if (musicOn) {
+    audio.pause();
+    btn.textContent = '▶';
+    btn.style.borderColor = 'rgba(201,168,76,0.2)';
+    btn.style.color = '#666';
+  } else {
+    audio.play();
+    btn.textContent = '🔊';
+    btn.style.borderColor = 'rgba(201,168,76,0.5)';
+    btn.style.color = '#c9a84c';
+  }
+  musicOn = !musicOn;
+}
+
+function setVolume(value) {
+  const audio = document.getElementById('bgm');
+  audio.volume = value / 100;
+}
+
+function increaseVolume() {
+  const slider = document.getElementById('volumeSlider');
+  const newVal = Math.min(100, parseInt(slider.value) + 10);
+  slider.value = newVal;
+  setVolume(newVal);
+}
+
+function decreaseVolume() {
+  const slider = document.getElementById('volumeSlider');
+  const newVal = Math.max(0, parseInt(slider.value) - 10);
+  slider.value = newVal;
+  setVolume(newVal);
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if (e.key === '+' || e.key === '=') {
+    increaseVolume();
+  } else if (e.key === '-' || e.key === '_') {
+    decreaseVolume();
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    increaseVolume();
+  } else if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    decreaseVolume();
+  } else if (e.key === ' ' || e.key === 'm') {
+    e.preventDefault();
+    toggleMusic();
+  }
+});
 </script>
 </body>
 </html>
