@@ -361,7 +361,20 @@ input[type=text]::placeholder { color: var(--muted); }
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="tc-movie-website.html">TC<span>MOVIE</span></a>
+  <div style="display:flex; align-items:center; gap:1rem;">
+    <a href="index.html" style="
+      display:inline-flex; align-items:center; gap:6px;
+      color:var(--muted); text-decoration:none;
+      font-size:0.75rem; letter-spacing:2px; text-transform:uppercase;
+      padding:6px 12px; border:1px solid transparent;
+      transition:color 0.2s, border-color 0.2s;
+    " onmouseover="this.style.color='#c9a84c';this.style.borderColor='rgba(201,168,76,0.3)'"
+       onmouseout="this.style.color='';this.style.borderColor='transparent'">
+      ← กลับหน้าหลัก
+    </a>
+    <span style="color:rgba(255,255,255,0.1);">|</span>
+    <a class="nav-logo" href="index.html">TC<span>MOVIE</span></a>
+  </div>
   <span class="nav-right">ระบบให้คะแนน</span>
 </nav>
 
@@ -796,74 +809,54 @@ function showToast(msg, isError=false) {
 function fakeDelay(ms) { return new Promise(r => setTimeout(r, ms)); }
 </script>
 
-<!-- BGM (เพลงเดียวกับหน้าหลัก) -->
+<!-- BGM -->
 <audio id="bgm" src="Alice In Chains Nutshell Official Audio.mp3" loop></audio>
 
-<!-- Volume panel -->
 <div id="volumeControl" style="
   position:fixed; bottom:82px; right:16px; z-index:9999;
   display:none; flex-direction:column; align-items:center; gap:8px;
-  background:rgba(10,10,10,0.92);
-  border:1px solid rgba(201,168,76,0.3);
-  padding:12px 10px; border-radius:12px;
-  backdrop-filter:blur(8px);
+  background:rgba(10,10,10,0.92); border:1px solid rgba(201,168,76,0.3);
+  padding:12px 10px; border-radius:12px; backdrop-filter:blur(8px);
 ">
   <button onclick="increaseVolume()" style="background:transparent;border:none;color:#c9a84c;font-size:1.2rem;cursor:pointer;">+</button>
-  <input id="volumeSlider" type="range" min="0" max="100" value="50"
-    oninput="setVolume(this.value)"
+  <input id="volumeSlider" type="range" min="0" max="100" value="50" oninput="setVolume(this.value)"
     style="writing-mode:vertical-lr;direction:rtl;width:5px;height:80px;cursor:pointer;accent-color:#c9a84c;">
   <button onclick="decreaseVolume()" style="background:transparent;border:none;color:#c9a84c;font-size:1.2rem;cursor:pointer;">−</button>
 </div>
 
-<!-- Music toggle button -->
 <button id="musicBtn" onclick="toggleMusic()" title="เปิด/ปิดเพลง" style="
   position:fixed; bottom:24px; right:24px; z-index:9999;
-  background:rgba(10,10,10,0.85);
-  border:1px solid rgba(201,168,76,0.2);
+  background:rgba(10,10,10,0.85); border:1px solid rgba(201,168,76,0.2);
   color:#666; width:48px; height:48px; border-radius:50%;
-  font-size:1.3rem; cursor:pointer;
-  backdrop-filter:blur(8px);
+  font-size:1.3rem; cursor:pointer; backdrop-filter:blur(8px);
   display:flex; align-items:center; justify-content:center;
-  transition: border-color 0.2s, color 0.2s;
+  transition:border-color 0.2s, color 0.2s;
 ">▶</button>
 
 <script>
 let musicOn = false;
-
 function toggleMusic() {
   const audio = document.getElementById('bgm');
-  const btn   = document.getElementById('musicBtn');
-  const vol   = document.getElementById('volumeControl');
+  const btn = document.getElementById('musicBtn');
+  const vol = document.getElementById('volumeControl');
   if (musicOn) {
-    audio.pause();
-    btn.textContent = '▶';
-    btn.style.borderColor = 'rgba(201,168,76,0.2)';
-    btn.style.color = '#666';
+    audio.pause(); btn.textContent = '▶';
+    btn.style.borderColor = 'rgba(201,168,76,0.2)'; btn.style.color = '#666';
     vol.style.display = 'none';
   } else {
-    audio.play();
-    btn.textContent = '🔊';
-    btn.style.borderColor = 'rgba(201,168,76,0.5)';
-    btn.style.color = '#c9a84c';
+    audio.play(); btn.textContent = '🔊';
+    btn.style.borderColor = 'rgba(201,168,76,0.5)'; btn.style.color = '#c9a84c';
     vol.style.display = 'flex';
   }
   musicOn = !musicOn;
 }
-function setVolume(value) { document.getElementById('bgm').volume = value / 100; }
-function increaseVolume() {
-  const s = document.getElementById('volumeSlider');
-  s.value = Math.min(100, parseInt(s.value) + 10);
-  setVolume(s.value);
-}
-function decreaseVolume() {
-  const s = document.getElementById('volumeSlider');
-  s.value = Math.max(0, parseInt(s.value) - 10);
-  setVolume(s.value);
-}
+function setVolume(v) { document.getElementById('bgm').volume = v / 100; }
+function increaseVolume() { const s = document.getElementById('volumeSlider'); s.value = Math.min(100, +s.value + 10); setVolume(s.value); }
+function decreaseVolume() { const s = document.getElementById('volumeSlider'); s.value = Math.max(0, +s.value - 10); setVolume(s.value); }
 document.addEventListener('keydown', e => {
-  if (e.key === '+' || e.key === '=' || e.key === 'ArrowUp') { e.preventDefault(); increaseVolume(); }
-  else if (e.key === '-' || e.key === '_' || e.key === 'ArrowDown') { e.preventDefault(); decreaseVolume(); }
-  else if (e.key === ' ' || e.key === 'm') { e.preventDefault(); toggleMusic(); }
+  if (e.key==='+' || e.key==='=' || e.key==='ArrowUp') { e.preventDefault(); increaseVolume(); }
+  else if (e.key==='-' || e.key==='_' || e.key==='ArrowDown') { e.preventDefault(); decreaseVolume(); }
+  else if (e.key===' ' || e.key==='m') { e.preventDefault(); toggleMusic(); }
 });
 </script>
 </body>
