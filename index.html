@@ -315,96 +315,181 @@
   }
   .filter-btn {
     background: transparent;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(255,255,255,0.12);
     color: var(--muted);
-    padding: 7px 20px;
+    padding: 6px 18px;
     font-family: 'Sarabun', sans-serif;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     letter-spacing: 2px;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.2s;
+    border-radius: 2px;
   }
-  .filter-btn:hover, .filter-btn.active {
+  .filter-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
+  .filter-btn.active {
     background: var(--gold);
     border-color: var(--gold);
     color: #0a0a0a;
   }
+
+  /* NETFLIX-STYLE MOVIE GRID */
   .movies-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
   }
   .movie-card {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    overflow: hidden;
-    transition: transform 0.25s, border-color 0.25s;
-    cursor: pointer;
-  }
-  .movie-card:hover { transform: translateY(-4px); border-color: var(--gold); }
-  .movie-thumb {
-    width: 100%;
-    height: 220px;
-    display: flex; align-items: center; justify-content: center;
     position: relative;
+    border-radius: 4px;
     overflow: hidden;
+    cursor: pointer;
+    aspect-ratio: 2/3;
     background: var(--bg3);
+    transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.3s;
+    border: none;
+  }
+  .movie-card:hover {
+    transform: scale(1.04) translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(201,168,76,0.3);
+    z-index: 2;
+  }
+  .movie-thumb {
+    width: 100%; height: 100%;
+    position: absolute; inset: 0;
   }
   .movie-cover {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
   }
-  .movie-thumb::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.75));
-  }
+  .movie-card:hover .movie-cover { transform: scale(1.05); }
   .movie-thumb .movie-emoji {
-    position: relative;
-    z-index: 2;
-    font-size: 3rem;
-    color: var(--text);
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem;
+    background: var(--bg3);
   }
-  .movie-info { padding: 1rem 1.2rem 1.2rem; }
-  .movie-genre-tag {
-    font-size: 0.65rem;
-    letter-spacing: 3px;
+
+  /* Gradient overlay always present (bottom) */
+  .movie-card::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(
+      to bottom,
+      transparent 40%,
+      rgba(0,0,0,0.5) 70%,
+      rgba(0,0,0,0.92) 100%
+    );
+    transition: opacity 0.3s;
+  }
+
+  /* Hover info overlay */
+  .movie-hover-info {
+    position: absolute; inset: 0; z-index: 2;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 1rem;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    background: linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.1) 0%,
+      rgba(0,0,0,0.7) 50%,
+      rgba(0,0,0,0.97) 100%
+    );
+  }
+  .movie-card:hover .movie-hover-info { opacity: 1; }
+
+  /* Title always visible at bottom */
+  .movie-title-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    z-index: 3;
+    padding: 0.6rem 0.8rem 0.7rem;
+    background: linear-gradient(transparent, rgba(0,0,0,0.9) 40%);
+  }
+  .movie-title-overlay .movie-title {
+    font-family: 'Sarabun', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    margin: 0;
+  }
+  .movie-title-overlay .movie-genre-tag {
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  /* Hover detail content */
+  .movie-hover-info .movie-info {
+    padding: 0;
+  }
+  .movie-hover-info .movie-genre-tag {
+    font-size: 0.6rem;
+    letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--gold);
-    margin-bottom: 0.5rem;
+    margin-bottom: 4px;
   }
-  .movie-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.3rem;
-    letter-spacing: 2px;
-    line-height: 1.1;
-    margin-bottom: 0.3rem;
+  .movie-hover-info .movie-title {
+    font-family: 'Sarabun', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+    margin-bottom: 4px;
+    color: #fff;
   }
-  .movie-title-th {
-    font-size: 0.8rem;
-    color: var(--muted);
-    margin-bottom: 0.8rem;
+  .movie-hover-info .movie-title-th {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 6px;
   }
-  .movie-meta {
-    display: flex; align-items: center; justify-content: space-between;
-    font-size: 0.75rem;
-    color: var(--muted);
-    border-top: 1px solid var(--border);
-    padding-top: 0.8rem;
-    margin-top: 0.8rem;
+  .movie-hover-info .movie-meta {
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.5);
+    border: none; padding: 0; margin: 0;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 6px;
   }
-  .movie-year {
+  .movie-hover-info .movie-year {
     background: var(--red);
     color: #fff;
-    padding: 2px 8px;
-    font-size: 0.65rem;
-    letter-spacing: 2px;
+    padding: 1px 6px;
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    border-radius: 2px;
   }
-  .star-rating { color: var(--gold); font-size: 0.8rem; }
+  .movie-hover-info .movie-rating-row {
+    margin-bottom: 4px;
+  }
+  .movie-hover-info .rating-avg {
+    font-size: 0.65rem;
+  }
+  .movie-hover-info .star-display span {
+    font-size: 0.75rem;
+  }
+
+  /* Play button on hover */
+  .movie-play-btn {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 0.6rem;
+    font-size: 0.9rem;
+    color: #000;
+    padding-left: 3px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    transition: transform 0.2s, background 0.2s;
+  }
+  .movie-card:hover .movie-play-btn { transform: scale(1.1); background: var(--gold); }
 
   /* ABOUT */
   #about {
@@ -950,17 +1035,28 @@ function renderMovies() {
   grid.innerHTML = filtered.map(m => `
     <div class="movie-card" onclick="window.open('${m.url}','_blank')">
       <div class="movie-thumb" style="background:${m.bg};">
-        ${m.cover ? `<img class="movie-cover" src="${m.cover}" alt="${m.title} cover">` : ''}
-        ${!m.cover ? `<span class="movie-emoji">${m.emoji}</span>` : ''}
+        ${m.cover
+          ? `<img class="movie-cover" src="${m.cover}" alt="${m.title} cover" loading="lazy">`
+          : `<div class="movie-emoji">${m.emoji}</div>`
+        }
       </div>
-      <div class="movie-info">
+      <!-- Title always visible -->
+      <div class="movie-title-overlay">
         <div class="movie-genre-tag">${m.genre}</div>
         <div class="movie-title">${m.title}</div>
-        ${m.titleEn ? `<div class="movie-title-th">${m.titleEn}</div>` : '<div class="movie-title-th" style="height:1.1rem"></div>'}
-        ${starsHTML(m.id)}
-        <div class="movie-meta">
-          <span>${m.level} · ปีการศึกษา ${m.year}</span>
-          <span class="movie-year">${m.year}</span>
+      </div>
+      <!-- Hover overlay -->
+      <div class="movie-hover-info">
+        <div class="movie-play-btn">▶</div>
+        <div class="movie-info">
+          <div class="movie-genre-tag">${m.genre}</div>
+          <div class="movie-title">${m.title}</div>
+          ${m.titleEn ? `<div class="movie-title-th">${m.titleEn}</div>` : ''}
+          ${starsHTML(m.id)}
+          <div class="movie-meta">
+            <span>${m.level} · ${m.year}</span>
+            <span class="movie-year">${m.year}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1018,11 +1114,10 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
-
 <!-- BGM -->
 <audio id="bgm" src="Alice In Chains Nutshell Official Audio.mp3" loop></audio>
 
-<!-- Volume panel (ซ่อนไว้ก่อน) -->
+<!-- Volume panel -->
 <div id="volumeControl" style="
   position:fixed; bottom:82px; right:16px; z-index:9999;
   display:none; flex-direction:column; align-items:center; gap:8px;
@@ -1052,47 +1147,28 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 <script>
 let musicOn = false;
-
 function toggleMusic() {
   const audio = document.getElementById('bgm');
-  const btn   = document.getElementById('musicBtn');
-  const vol   = document.getElementById('volumeControl');
-
+  const btn = document.getElementById('musicBtn');
+  const vol = document.getElementById('volumeControl');
   if (musicOn) {
-    audio.pause();
-    btn.textContent = '▶';
-    btn.style.borderColor = 'rgba(201,168,76,0.2)';
-    btn.style.color = '#666';
+    audio.pause(); btn.textContent = '▶';
+    btn.style.borderColor = 'rgba(201,168,76,0.2)'; btn.style.color = '#666';
     vol.style.display = 'none';
   } else {
-    audio.play();
-    btn.textContent = '🔊';
-    btn.style.borderColor = 'rgba(201,168,76,0.5)';
-    btn.style.color = '#c9a84c';
+    audio.play(); btn.textContent = '🔊';
+    btn.style.borderColor = 'rgba(201,168,76,0.5)'; btn.style.color = '#c9a84c';
     vol.style.display = 'flex';
   }
   musicOn = !musicOn;
 }
-
-function setVolume(value) {
-  document.getElementById('bgm').volume = value / 100;
-}
-function increaseVolume() {
-  const s = document.getElementById('volumeSlider');
-  s.value = Math.min(100, parseInt(s.value) + 10);
-  setVolume(s.value);
-}
-function decreaseVolume() {
-  const s = document.getElementById('volumeSlider');
-  s.value = Math.max(0, parseInt(s.value) - 10);
-  setVolume(s.value);
-}
-
-// Keyboard shortcuts
+function setVolume(v) { document.getElementById('bgm').volume = v / 100; }
+function increaseVolume() { const s = document.getElementById('volumeSlider'); s.value = Math.min(100, +s.value + 10); setVolume(s.value); }
+function decreaseVolume() { const s = document.getElementById('volumeSlider'); s.value = Math.max(0, +s.value - 10); setVolume(s.value); }
 document.addEventListener('keydown', e => {
-  if (e.key === '+' || e.key === '=' || e.key === 'ArrowUp') { e.preventDefault(); increaseVolume(); }
-  else if (e.key === '-' || e.key === '_' || e.key === 'ArrowDown') { e.preventDefault(); decreaseVolume(); }
-  else if (e.key === ' ' || e.key === 'm') { e.preventDefault(); toggleMusic(); }
+  if (e.key==='+' || e.key==='=' || e.key==='ArrowUp') { e.preventDefault(); increaseVolume(); }
+  else if (e.key==='-' || e.key==='_' || e.key==='ArrowDown') { e.preventDefault(); decreaseVolume(); }
+  else if (e.key===' ' || e.key==='m') { e.preventDefault(); toggleMusic(); }
 });
 </script>
 </body>
