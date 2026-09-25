@@ -66,7 +66,12 @@
     padding: 80px 2rem 4rem;
     text-align: center;
     overflow: hidden;
+    <video class="bg-video" autoplay muted loop playsinline>
+  <source src="videos/hero-bg.mp4" type="video/mp4">
+</video>
+    
   }
+  
   .bg-video {
     position: absolute;
     top: 0; left: 0;
@@ -1114,9 +1119,6 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
-
-// BGM  
-
 <audio id="bgm" src="The Weeknd Save Your Tears Official Music Video.mp3" loop></audio>
 
 <!-- Volume panel -->
