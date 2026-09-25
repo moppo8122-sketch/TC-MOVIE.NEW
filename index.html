@@ -68,7 +68,8 @@
     text-align: center;
     overflow: hidden;
   }
-  
+
+<style>
   .bg-video {
     position: absolute;
     top: 0; left: 0;
@@ -77,10 +78,19 @@
     z-index: 0;
     opacity: 0.35;
     filter: brightness(0.5) saturate(1.2);
-      <video class="bg-video" autoplay muted loop playsinline>
-  <source src="Post Malone, Swae Lee - Sunflower (Spider-Man_ Into the Spider-Verse).mp4" type="video/mp4">
-</video>
-  }
+  }             
+
+
+<body>
+  <section class="hero">
+
+    <video class="bg-video" autoplay muted loop playsinline>
+      <source src="sunflower.mp4" type="video/mp4">
+    </video>       ← HTML อยู่ใน body = ถูก
+
+  </section>
+</body>
+
   .hero::before {
     content: '';
     position: absolute; inset: 0;
